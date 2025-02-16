@@ -1,3 +1,14 @@
+# Important notice
+This is a fork of the best REST Firebase for Unity, which fixes a few significant details:
+1. Fixed the dynCall calls in JSLib.
+2. The Local ID is parsed from Firebase Auth (may by important for security rules).
+
+## Even more important notice
+To avoid CORS headers error EventStream request settings is set by default to (in JSLib): 
+```WithCredentials = 0```
+Try to solve CORS problems if you want access streaming event data or use this repo to get simple events w/o it.
+
+
 # Unity Firebase Realtime Database REST API
 Write, Read, Remove and Streaming data using [Firebase's database REST API](https://firebase.google.com/docs/reference/rest/database)
 
