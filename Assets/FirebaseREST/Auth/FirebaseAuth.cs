@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using BengStars;
 using MiniJSON;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -148,7 +149,7 @@ namespace FirebaseREST
                 {
                     Dictionary<string, object> dataMap = Json.Deserialize(op.webRequest.downloadHandler.text) as Dictionary<string, object>;
                     tokenData = new TokenData(dataMap["id_token"].ToString(), dataMap["refresh_token"].ToString(), 
-                        dataMap["expires_in"].ToString(), DateTime.Now);
+                        dataMap["expires_in"].ToString(), DateTime.Now, dataMap["localId"].ToString());
                     if (OnComplete != null)
                         OnComplete(new Response<TokenData>("success", true, (int)op.webRequest.responseCode, tokenData));
                 }
@@ -214,7 +215,7 @@ namespace FirebaseREST
                 if (OnComplete != null)
                 {
                     Dictionary<string, object> dataMap = Json.Deserialize(webReqOp.webRequest.downloadHandler.text) as Dictionary<string, object>;
-                    this.tokenData = new TokenData(dataMap["idToken"].ToString(), dataMap["refreshToken"].ToString(), dataMap["expiresIn"].ToString(), DateTime.Now);
+                    this.tokenData = new TokenData(dataMap["idToken"].ToString(), dataMap["refreshToken"].ToString(), dataMap["expiresIn"].ToString(), DateTime.Now, dataMap["localId"].ToString());
                     OnComplete(new Response<TokenData>("success", true, (int)webReqOp.webRequest.responseCode, tokenData));
                 }
             }
