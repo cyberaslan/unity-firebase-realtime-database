@@ -17,11 +17,11 @@
                 var bufferSize = lengthBytesUTF8(reason) + 1;
                 var buffer = _malloc(bufferSize);
                 stringToUTF8(reason, buffer,bufferSize);
-                Runtime.dynCall('vii', errCallback, [id, buffer]);
+                dynCall('vii', errCallback, [id, buffer]);
 				_free(buffer);
 			}
 			else
-				Runtime.dynCall('vii', errCallback, [id, null]);
+				dynCall('vii', errCallback, [id, null]);
         }
     },
 
@@ -35,6 +35,8 @@
 
 		var id = es.nextInstanceId;
 
+		withCredentials = 0;
+
 		console.log(id + ' ES_Create(' + url + ', ' + withCredentials + ')');
 
 		event.eventImpl = new EventSource(url, { withCredentials: withCredentials != 0 ? true : false } );
@@ -42,7 +44,7 @@
 		event.eventImpl.onopen = function() {
 			console.log(id + ' ES_Create - onOpen');
 
-			Runtime.dynCall('vi', onOpen, [id]);
+			dynCall('vi', onOpen, [id]);
 		};
 
 		function AllocString(str) {
@@ -61,7 +63,7 @@
 			console.log("put");
 			var eventBuffer = AllocString("put");
 			var dataBuffer = AllocString(e.data);
-			Runtime.dynCall('viii', onMessage, [id, eventBuffer, dataBuffer]);
+			dynCall('viii', onMessage, [id, eventBuffer, dataBuffer]);
 
 			if (eventBuffer != 0)
 				_free(eventBuffer);
@@ -74,7 +76,7 @@
 			console.log("patch");
 			var eventBuffer = AllocString("patch");
 			var dataBuffer = AllocString(e.data);
-			Runtime.dynCall('viii', onMessage, [id, eventBuffer, dataBuffer]);
+			dynCall('viii', onMessage, [id, eventBuffer, dataBuffer]);
 
 			if (eventBuffer != 0)
 				_free(eventBuffer);
@@ -86,7 +88,7 @@
 		event.eventImpl.addEventListener('keep-alive',function (e){
 			console.log("keep_alive");
 			var eventBuffer = AllocString("keep-alive");
-			Runtime.dynCall('viii', onMessage, [id, eventBuffer, null]);
+			dynCall('viii', onMessage, [id, eventBuffer, null]);
 
 			if (eventBuffer != 0)
 				_free(eventBuffer);
@@ -95,7 +97,7 @@
 		event.eventImpl.addEventListener('auth_revoked',function (e){
 			console.log("auth_revoked");
 			var eventBuffer = AllocString("auth_revoked");
-			Runtime.dynCall('viii', onMessage, [id, eventBuffer, null]);
+			dynCall('viii', onMessage, [id, eventBuffer, null]);
 
 			if (eventBuffer != 0)
 				_free(eventBuffer);
